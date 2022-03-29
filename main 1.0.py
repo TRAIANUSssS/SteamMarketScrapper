@@ -33,8 +33,6 @@ import openpyxl
 import xlsxwriter
 import xlrd
 
-
-
 import Logs
 
 import matplotlib.pyplot as plt  # plot data
@@ -129,7 +127,7 @@ def getAllData():
                                            'rr'])
         currRun = 1  # to keep track of the program running
 
-        #for currItem in allItemNames:  # go through all item names
+        # for currItem in allItemNames:  # go through all item names
         for i in range(10):  # go through all item names
             currItem = allItemNames[i]
             # need to encode symbols into ASCII for http (https://www.w3schools.com/tags/ref_urlencode.asp)
@@ -208,9 +206,12 @@ def getAllData():
                         RR = float(fitR[2] ** 2)  # convert to R^2 value
 
                         # save data
-                        currentItemDict = {'itemName': currItem, 'initial': itemPriceInitial, 'timeOnMarket': timeOnMarket,
-                                           'priceIncrease': priceIncrease, 'priceAvg': itemPriceAvg, 'priceSD': itemPriceSD,
-                                           'maxPrice': maxPrice, 'maxIdx': maxIdx, 'minPrice': minPrice, 'minIdx': minIdx,
+                        currentItemDict = {'itemName': currItem, 'initial': itemPriceInitial,
+                                           'timeOnMarket': timeOnMarket,
+                                           'priceIncrease': priceIncrease, 'priceAvg': itemPriceAvg,
+                                           'priceSD': itemPriceSD,
+                                           'maxPrice': maxPrice, 'maxIdx': maxIdx, 'minPrice': minPrice,
+                                           'minIdx': minIdx,
                                            'swing': swing, 'volAvg': itemVolAvg, 'volSD': itemVolSD, 'slope': fitR[0],
                                            'rr': RR}
                         currItemPD = pd.DataFrame(currentItemDict, index=[0])
@@ -230,7 +231,6 @@ def getAllData():
         allItemsPD.to_pickle(gameID + 'PriceData.pkl')
     print('All item data collected')
     # save the dataframe
-
 
 
 """
