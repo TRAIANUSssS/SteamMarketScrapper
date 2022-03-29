@@ -1,0 +1,15 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+*.xml
+*.xlsx
+SavedPages
+218620AllData
+218620AllDataFinish
+218620ItemNames.txt
+218620PriceData.pkl
