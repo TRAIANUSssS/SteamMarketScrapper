@@ -14,3 +14,4 @@ SavedPages
 218620ItemNames.txt
 218620PriceData.pkl
 __pycache__
+*.pyc
