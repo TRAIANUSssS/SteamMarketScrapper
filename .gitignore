@@ -15,3 +15,4 @@ SavedPages
 218620PriceData.pkl
 __pycache__
 *.pyc
+*txt

@@ -9,6 +9,7 @@ from datetime import datetime
 import numpy as np
 
 import Constants
+import DateGenerate
 
 
 def getAllData():
@@ -37,17 +38,39 @@ def getAllData():
             if item.status_code == 200:
                 item = item.content
                 item = json.loads(item)
-                if item:  # did we even get any data back
-                    itemPriceData = item['prices']  # is there price data?
-                    for j in itemPriceData:
-                        print(j)
-                    
+                if item:
+                    itemPriceData = item['prices']
+                    dateDistribution(itemPriceData)
+
+                    # for j in itemPriceData:
+                    #     print(j)
+
                 else:
                     continue
         # allItemsPD.to_excel('Test_table.xlsx')
         # allItemsPD.to_pickle(gameID + 'PriceData.pkl')
     print('All item data collected')
     # save the dataframe
+
+
+def dateDistribution(itemPriceData):
+    priceList = np.array([[]])
+    date_list = DateGenerate.generateTime()
+    itemPriceData = np.asarray(itemPriceData)
+
+    for i in range(len(date_list)):
+        np.append(priceList, [])
+        print(priceList.shape)
+        for j in range(len(date_list[i])):
+            x, y = np.where(itemPriceData == date_list[i][j])
+            print(i, j)
+            time.sleep(0.01)
+            np.append(priceList[i], itemPriceData[x])
+            #print(x, y, date_list[i][j], itemPriceData[x])
+
+    print(priceList.shape)
+    for i in priceList:
+        print(i)
 
 
 if __name__ == '__main__':

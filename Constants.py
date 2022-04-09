@@ -2,7 +2,7 @@ import pandas as pd
 
 
 gameList = ['218620']
-cookie = {'steamLoginSecure': '76561198823388271%7C%7CD6F8ADE139B6722E5D6E504121C936245287A293',
+cookie = {'steamLoginSecure': '76561198823388271%7C%7C02A955A9678AB2986212F66F249336CC00FF0911',
           'ActListPageSize': '10',
           '_ga': 'GA1.2.869442218.1648418074',
           '_gid': 'GA1.2.1081667056.1648418074',
