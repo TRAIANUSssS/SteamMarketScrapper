@@ -25,10 +25,8 @@ def getAllData():
         # for currItem in allItemNames:  # go through all item names
         for i in range(1):  # go through all item names
             # currItem = allItemNames[i]
-            # # need to encode symbols into ASCII for http (https://www.w3schools.com/tags/ref_urlencode.asp)
-            # currItemHTTP = currItem.replace(' ', '%20')  # convert spaces to %20
-            # currItemHTTP = currItemHTTP.replace('&', '%26')  # convert & to %26
-            # I was lazy there's probably others but I catch this below
+            #currItemHTTP = rename(currItem)
+
             currItemHTTP = 'AK-47%20%7C%20Slate%20%28Field-Tested%29'
             item = requests.get(
                 'https://steamcommunity.com/market/pricehistory/?appid=' + '730' + '&market_hash_name=' + currItemHTTP,
@@ -40,7 +38,7 @@ def getAllData():
                 item = json.loads(item)
                 if item:
                     itemPriceData = item['prices']
-                    dateDistribution(itemPriceData)
+                    dateList = dateDistribution(itemPriceData)
 
                     # for j in itemPriceData:
                     #     print(j)
@@ -53,25 +51,43 @@ def getAllData():
     # save the dataframe
 
 
+def rename(name):
+    name = name.replace(' ', '%20')  # convert spaces to %20
+    name = name.replace('&', '%26')  # convert & to %26
+    name = name.replace("'", '%27')  # convert ' to %27
+    name = name.replace("(", '%28')  # convert ( to %28
+    name = name.replace(")", '%29')  # convert ) to %29
+    name = name.replace("|", '%7C')  # convert | to %7C
+    name = name.replace(",", '%2C')  # convert , to %2C
+    return name
+
+
 def dateDistribution(itemPriceData):
-    priceList = np.array([[]])
+    priceList = np.zeros((31, 24), dtype=list)
     date_list = DateGenerate.generateTime()
     itemPriceData = np.asarray(itemPriceData)
+    print(priceList.shape)
+    # print(priceList)
 
     for i in range(len(date_list)):
-        np.append(priceList, [])
-        print(priceList.shape)
         for j in range(len(date_list[i])):
             x, y = np.where(itemPriceData == date_list[i][j])
-            print(i, j)
-            time.sleep(0.01)
-            np.append(priceList[i], itemPriceData[x])
-            #print(x, y, date_list[i][j], itemPriceData[x])
+            # print(i, j)
+            # time.sleep(0.01)
+            # print(itemPriceData[x][0][0])
+            try:
+                priceList[i, j] = (itemPriceData[x][0][0], itemPriceData[x][0][1], itemPriceData[x][0][2])
+            except:
+                priceList[i, j] = (None, None, None)
+            # np.append(priceList, itemPriceData[x], axis=0)
+            # print(x, y, date_list[i][j], itemPriceData[x])
 
-    print(priceList.shape)
-    for i in priceList:
-        print(i)
-
+    # print(priceList)
+    # np.set_printoptions(linewidth=3000)
+    # print(priceList)
+    # for i in priceList:
+    #     print(i)
+    return priceList
 
 if __name__ == '__main__':
     getAllData()
