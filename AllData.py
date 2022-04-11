@@ -8,24 +8,27 @@ import json
 from datetime import datetime
 import numpy as np
 
+import Analysing
 import Constants
 import DateGenerate
 
 
 def getAllData():
+    np.set_printoptions(linewidth=3000)
+
     for gameID in Constants.gameList:
         # open file with all names
         with open(gameID + 'ItemNames.txt', "rb") as file:  # Unpickling
             allItemNames = pickle.load(file)
 
-        # intialize our Panda's dataframe with the data we want from each item
+        # initialize our Panda's dataframe with the data we want from each item
         allItemsPD = Constants.pd
         currRun = 1  # to keep track of the program running
 
         # for currItem in allItemNames:  # go through all item names
         for i in range(1):  # go through all item names
             # currItem = allItemNames[i]
-            #currItemHTTP = rename(currItem)
+            # currItemHTTP = rename(currItem)
 
             currItemHTTP = 'AK-47%20%7C%20Slate%20%28Field-Tested%29'
             item = requests.get(
@@ -38,17 +41,31 @@ def getAllData():
                 item = json.loads(item)
                 if item:
                     itemPriceData = item['prices']
-                    dateList = dateDistribution(itemPriceData)
-
-                    # for j in itemPriceData:
-                    #     print(j)
+                    dataList = dateDistribution(itemPriceData)
+                    analysisInformation(dataList)
 
                 else:
                     continue
         # allItemsPD.to_excel('Test_table.xlsx')
         # allItemsPD.to_pickle(gameID + 'PriceData.pkl')
     print('All item data collected')
-    # save the dataframe
+
+
+def analysisInformation(data):
+    priceMatrix = []
+    countMatrix = []
+
+    for frame in data:
+        price = np.array(frame[:, 1], dtype=float)
+        priceMatrix.append(price)
+
+        count = np.array(frame[:, 2], dtype=int)
+        countMatrix.append(count)
+    # print(np.array(priceMatrix))
+    # print(np.array(countMatrix))
+
+    priceAvgList = Analysing.createPriceAvgList(priceMatrix)
+    countAvgList = Analysing.createPriceAvgList(countMatrix)
 
 
 def rename(name):
@@ -63,31 +80,26 @@ def rename(name):
 
 
 def dateDistribution(itemPriceData):
-    priceList = np.zeros((31, 24), dtype=list)
+    priceList = np.zeros((31, 24, 3), dtype=object)
     date_list = DateGenerate.generateTime()
     itemPriceData = np.asarray(itemPriceData)
-    print(priceList.shape)
+    # print(priceList.shape)
     # print(priceList)
 
     for i in range(len(date_list)):
         for j in range(len(date_list[i])):
             x, y = np.where(itemPriceData == date_list[i][j])
-            # print(i, j)
-            # time.sleep(0.01)
-            # print(itemPriceData[x][0][0])
             try:
-                priceList[i, j] = (itemPriceData[x][0][0], itemPriceData[x][0][1], itemPriceData[x][0][2])
+                (priceList[i, j, 0], priceList[i, j, 1], priceList[i, j, 2]) = (
+                    itemPriceData[x][0][0], itemPriceData[x][0][1], itemPriceData[x][0][2])
             except:
-                priceList[i, j] = (None, None, None)
-            # np.append(priceList, itemPriceData[x], axis=0)
-            # print(x, y, date_list[i][j], itemPriceData[x])
+                (priceList[i, j, 0], priceList[i, j, 1], priceList[i, j, 2]) = (0, 0, 0)
 
-    # print(priceList)
-    # np.set_printoptions(linewidth=3000)
-    # print(priceList)
+    np.set_printoptions(linewidth=3000)
     # for i in priceList:
-    #     print(i)
+    #     print([(e[0], e[1], e[2]) for e in i])
     return priceList
+
 
 if __name__ == '__main__':
     getAllData()

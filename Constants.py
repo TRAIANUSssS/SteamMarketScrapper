@@ -1,7 +1,7 @@
 import pandas as pd
 
 gameList = ['218620']
-cookie = {'steamLoginSecure': '76561198823388271%7C%7C02A955A9678AB2986212F66F249336CC00FF0911',
+cookie = {'steamLoginSecure': '76561198823388271%7C%7C74FFAA4D9CF633B85B89E8E45274F3F0E1393FCC',
           'ActListPageSize': '10',
           '_ga': 'GA1.2.869442218.1648418074',
           '_gid': 'GA1.2.1081667056.1648418074',
@@ -19,8 +19,18 @@ allItemsPD = pd.DataFrame(data=None, index=None,
                                    'priceMinAvg', 'priceMinMin', 'priceMinMax', 'priceMinDelta',
                                    'priceMaxAvg', 'priceMaxMin', 'priceMaxMax', 'priceMaxDelta'
                                    ])
-# columns=['itemName', 'initial', 'timeOnMarket', 'priceIncrease', 'priceAvg',
-#          'priceSD',
-#          'maxPrice', 'maxIdx', 'minPrice', 'minIdx', 'swing', 'volAvg', 'volSD',
-#          'slope',
-#          'rr'])
+"""
+'itemName'
+'priceDeltaMaxAvgMinAvg'
+'currentPrice'
+'priceAvg'  +
+'countAvg' +
+'priceMinAvg' 
+'priceMinMin' 
+'priceMinMax' 
+'priceMinDelta'
+'priceMaxAvg' 
+'priceMaxMin' 
+'priceMaxMax' 
+'priceMaxDelta'
+"""
